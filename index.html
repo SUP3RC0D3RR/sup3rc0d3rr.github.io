@@ -1,13 +1,4 @@
 <!DOCTYPE html>
-<!--
-Created using JS Bin
-http://jsbin.com
-
-Copyright (c) 2026 by anonymous (http://jsbin.com/lefedusaga/1/edit)
-
-Released under the MIT license: http://jsbin.mit-license.org
--->
-<meta name="robots" content="noindex">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,202 +6,95 @@ Released under the MIT license: http://jsbin.mit-license.org
     <title>Citrus Browser</title>
     <style>
         :root { --orange: #ff9500; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            overflow: hidden;
-            height: 100vh;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            background: #0a0a0a; 
+            color: #fff; 
+            height: 100vh; 
+            overflow: hidden; 
             touch-action: manipulation;
         }
-
+        
         .container { height: 100vh; display: flex; flex-direction: column; }
-
-        .top-bar {
-            display: flex; align-items: center; padding: 8px 12px 4px;
-            background: rgba(15, 15, 15, 0.98);
-        }
-        .logo {
-            font-size: 2.35rem;
-            font-weight: 900;
-            background: linear-gradient(90deg, #ff9500, #ffb74d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: transform 0.4s ease;
-        }
-        .logo:hover { transform: scale(1.05); }
-
-        .tabs-container {
-            display: flex;
-            background: rgba(20, 20, 20, 0.98);
-            border-bottom: 1px solid #222;
-        }
-        .tabs {
-            display: flex;
-            overflow-x: auto;
-            padding: 5px 8px 0;
-            gap: 5px;
-            flex: 1;
-        }
-        .tab {
-            background: #1a1a1a;
-            padding: 9px 16px;
-            border-radius: 12px 12px 0 0;
-            min-width: 120px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
+        .top-bar { padding: 10px 14px; background: #0f0f0f; font-size: 1.8rem; font-weight: 900; color: var(--orange); }
+        
+        .tabs-container { display: flex; background: #141414; padding: 6px 10px 0; gap: 5px; border-bottom: 1px solid #222; }
+        .tab { 
+            background: #1a1a1a; 
+            padding: 10px 18px; 
+            border-radius: 10px 10px 0 0; 
+            cursor: pointer; 
             border: 1px solid #333;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: tabOpen 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border-bottom: none;
+            transition: all 0.3s ease;
         }
-        @keyframes tabOpen {
-            from { opacity: 0; transform: translateY(40px) scale(0.6); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .tab.closing {
-            animation: tabClose 0.4s ease forwards;
-        }
-        @keyframes tabClose {
-            to { opacity: 0; transform: translateY(30px) scale(0.7); }
-        }
-        .tab.active {
-            background: #252525;
-            border-color: var(--orange);
-            color: var(--orange);
-            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
-        }
-
-        .new-tab {
-            background: rgba(40, 40, 40, 0.9);
-            color: var(--orange);
-            width: 46px; height: 46px;
-            border-radius: 12px;
-            font-size: 30px;
-            cursor: pointer;
-            margin: 5px 8px 0 4px;
-            flex-shrink: 0;
-            transition: all 0.4s ease;
-        }
-        .new-tab:active {
-            transform: rotate(90deg) scale(0.85);
-        }
-
-        #loading-bar {
-            position: absolute; top: 0; left: 0;
-            height: 3px;
-            background: linear-gradient(to right, var(--orange), #ffcc66);
-            width: 0%; z-index: 200;
-            opacity: 0;
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px var(--orange);
-        }
-        #loading-bar.active { opacity: 1; }
-
-        header { background: rgba(20, 20, 20, 0.95); padding: 8px 12px; }
-        .bottom-row { display: flex; align-items: center; gap: 6px; }
-
-        .nav-buttons button {
-            background: rgba(40, 40, 40, 0.9);
-            color: #fff;
-            border: 1px solid rgba(255,149,0,0.2);
-            width: 40px; height: 40px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 19px;
+        .tab.active { background: #252525; color: var(--orange); border-color: var(--orange); }
+        .new-tab { background: #282828; color: var(--orange); border: none; padding: 0 15px; cursor: pointer; border-radius: 8px; margin-bottom: 4px; font-size: 1.2rem; }
+        
+        header { padding: 10px 12px; background: #1a1a1a; display: flex; gap: 8px; align-items: center; }
+        .nav-buttons { display: flex; gap: 6px; }
+        .nav-buttons button { 
+            background: #282828; 
+            color: #fff; 
+            border: 1px solid rgba(255,149,0,0.2); 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 18px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
         
-        /* Fixed No-Snap Rotation Rules */
-        .nav-buttons button span {
-            display: inline-block;
+        /* Smooth, Isolated Rotation Rules (No warping) */
+        .nav-buttons button span { 
+            display: inline-block; 
             width: max-content;
             height: max-content;
             transform-origin: center center;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
         }
-        .nav-buttons button span.spinning {
-            animation: spin 0.8s linear infinite;
-        }
+        .nav-buttons button span.spinning { animation: spin 0.8s linear infinite; }
         @keyframes spin { 
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); } 
         }
 
-        .url-bar {
-            flex: 1;
-            background: rgba(30, 30, 30, 0.95);
-            border: 2px solid rgba(60, 60, 60, 0.8);
-            border-radius: 50px;
-            padding: 12px 16px;
-            color: #fff;
-            font-size: 15.5px;
-            transition: all 0.4s ease;
+        .url-bar { 
+            flex: 1; 
+            padding: 11px 16px; 
+            background: #1e1e1e; 
+            border: 2px solid #3c3c3c; 
+            color: #fff; 
+            border-radius: 50px; 
+            font-size: 15px;
+            transition: all 0.3s ease;
         }
-        .url-bar:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 25px rgba(255, 149, 0, 0.5);
-            transform: scale(1.02);
-        }
-
-        .content { flex: 1; position: relative; background: #0a0a0a; }
-        iframe { 
-            width: 100%; height: 100%; border: none; 
-            background: #fff;
-            opacity: 0; transition: opacity 0.4s ease;
-        }
-        iframe.loaded { opacity: 1; }
-
-        .welcome {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            animation: welcomeFade 1.2s ease;
-        }
-        @keyframes welcomeFade {
-            from { opacity: 0; transform: translate(-50%, -55%) scale(0.95); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        .welcome h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 900;
-            background: linear-gradient(90deg, #ff9500, #ffcc66);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .url-bar:focus { border-color: var(--orange); outline: none; }
+        
+        /* Fixed Perfect Fullscreen Content Box Layout */
+        .content { flex: 1; position: relative; background: #0a0a0a; width: 100%; height: 100%; overflow: hidden; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: #fff; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="top-bar">
-        <div class="logo">citrus</div>
-    </div>
-
+    <div class="top-bar">citrus</div>
     <div class="tabs-container">
-        <div class="tabs" id="tabs"></div>
-        <button class="new-tab" onclick="newTab()" title="New Tab">+</button>
+        <div id="tabs" style="display:flex; gap:5px;"></div>
+        <button class="new-tab" onclick="newTab()">+</button>
     </div>
-
-    <div id="loading-bar"></div>
 
     <header>
-        <div class="bottom-row">
-            <div class="nav-buttons">
-                <button onclick="goBack()" title="Back">←</button>
-                <button onclick="goForward()" title="Forward">→</button>
-                <button onclick="refreshPage()" title="Refresh"><span id="refresh-icon">↻</span></button>
-            </div>
-            <input type="text" id="url-input" class="url-bar" 
-                   placeholder="Search or enter URL" 
-                   onclick="handleUrlClick(this)"
-                   onkeypress="if(event.key==='Enter') loadUrl()">
+        <div class="nav-buttons">
+            <button onclick="goBack()">←</button>
+            <button onclick="goForward()">→</button>
+            <button onclick="refreshPage()"><span id="refresh-icon">↻</span></button>
         </div>
+        <input type="text" id="url-input" class="url-bar" placeholder="Search or enter URL" onclick="handleUrlClick(this)" onkeypress="if(event.key==='Enter') loadUrl()">
     </header>
 
     <div class="content" id="content-area"></div>
@@ -219,73 +103,55 @@ Released under the MIT license: http://jsbin.mit-license.org
 <script>
 let tabs = [];
 let currentTab = 0;
-const loadingBar = document.getElementById('loading-bar');
 
 function isLikelyURL(str) {
     if (!str) return false;
     const lower = str.toLowerCase().trim();
     if (lower.startsWith('http')) return true;
     if (lower.includes(' ')) return false;
-
     const tlds = ['.com','.net','.org','.io','.co','.uk','.de','.in','.app','.xyz','.me','.gg'];
     return tlds.some(tld => lower.endsWith(tld));
 }
 
-function startLoading() {
-    loadingBar.style.width = '0%';
-    loadingBar.classList.add('active');
-    setTimeout(() => loadingBar.style.width = '70%', 100);
-}
-function finishLoading() {
-    loadingBar.style.width = '100%';
-    setTimeout(() => {
-        loadingBar.classList.remove('active');
-        loadingBar.style.width = '0%';
-    }, 400);
-    
-    const refreshIcon = document.getElementById('refresh-icon');
-    if (refreshIcon) refreshIcon.classList.remove('spinning');
-}
-
 function createTab() {
-    tabs.push({ id: Date.now(), url: "citrus://home", title: "New Tab" });
-    renderTabs();
-    switchToTab(tabs.length - 1);
-}
-
-function renderTabs() {
-    const container = document.getElementById('tabs');
-    container.innerHTML = '';
-    tabs.forEach((tab, i) => {
-        const el = document.createElement('div');
-        el.className = `tab ${i === currentTab ? 'active' : ''}`;
-        el.innerHTML = `
-            <span onclick="switchToTab(${i})">${tab.title}</span>
-            <span class="close" onclick="closeTab(${i}); event.stopImmediatePropagation();">×</span>
-        `;
-        container.appendChild(el);
-    });
-}
-
-function switchToTab(index) {
-    currentTab = index;
-    renderTabs();
-    const area = document.getElementById('content-area');
+    tabs.push({ url: "citrus://home" });
+    currentTab = tabs.length - 1;
+    render();
     
-    if (tabs[index].url === "citrus://home") {
-        area.innerHTML = `<div class="welcome"><h1>citrus</h1><p>browse the internet freely</p></div>`;
-        document.getElementById('url-input').value = "citrus://home";
-    } else {
-        startLoading();
-        area.innerHTML = `<iframe src="miniproxy.php?url=${encodeURIComponent(tabs[index].url)}" allowfullscreen onload="this.classList.add('loaded'); finishLoading();"></iframe>`;
-        document.getElementById('url-input').value = tabs[index].url;
+    // Auto-select empty home state instantly for seamless typing
+    const input = document.getElementById('url-input');
+    if (input) {
+        input.focus();
+        input.select();
     }
 }
 
-/* Auto-highlights the input field if and only if it's a new tab page */
-function handleUrlClick(inputElement) {
-    if (inputElement.value === "citrus://home") {
-        inputElement.select();
+function render() {
+    // Render Navigation Tabs Header
+    const tabsDiv = document.getElementById('tabs');
+    tabsDiv.innerHTML = '';
+    tabs.forEach((tab, i) => {
+        tabsDiv.innerHTML += `<div class="tab ${i === currentTab ? 'active' : ''}" onclick="switchTab(${i})">Tab ${i+1}</div>`;
+    });
+
+    // Handle Address Bar Sync
+    const area = document.getElementById('content-area');
+    const input = document.getElementById('url-input');
+    input.value = tabs[currentTab].url;
+
+    // Render Webview Output Frame
+    if (tabs[currentTab].url === "citrus://home") {
+        area.innerHTML = `
+            <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <h1 style="font-size: 4rem; font-weight: 900; background: linear-gradient(90deg, #ff9500, #ffcc66); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">citrus</h1>
+                <p style="color: #666; margin-top: 5px;">Browse the internet freely</p>
+            </div>`;
+    } else {
+        // !!! REPLACE THE LINK BELOW WITH YOUR ACTUAL LIVE RENDER APP LINK !!!
+        const backendBaseUrl = "https://miniprox.onrender.com/";
+        
+        // Target name attribute grants the frame its own isolated historical stack
+        area.innerHTML = `<iframe name="citrus-frame" src="${backendBaseUrl}?url=${encodeURIComponent(tabs[currentTab].url)}"></iframe>`;
     }
 }
 
@@ -295,82 +161,43 @@ function loadUrl() {
 
     if (input.toLowerCase() === "citrus://home") {
         tabs[currentTab].url = "citrus://home";
-        tabs[currentTab].title = "New Tab";
-    } 
-    else if (isLikelyURL(input)) {
-        if (!input.startsWith('http')) input = 'https://' + input;
-        tabs[currentTab].url = input;
-        tabs[currentTab].title = input.replace(/^https?:\/\//, '').split('/')[0] || "Browsing";
-    } 
-    else {
-        const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
-        tabs[currentTab].url = searchUrl;
-        tabs[currentTab].title = input.length > 28 ? input.substring(0, 25) + "..." : input;
-    }
-
-    renderTabs();
-    switchToTab(currentTab);
-}
-
-function closeTab(index) {
-    if (tabs.length <= 1) return;
-    const tabEl = document.querySelectorAll('.tab')[index];
-    if (tabEl) tabEl.classList.add('closing');
-    setTimeout(() => {
-        tabs.splice(index, 1);
-        if (currentTab >= tabs.length) currentTab = tabs.length - 1;
-        renderTabs();
-        switchToTab(currentTab);
-    }, 350);
-}
-
-function newTab() { createTab(); }
-
-function refreshPage() {
-    if (tabs[currentTab].url === "citrus://home") return;
-    
-    const refreshIcon = document.getElementById('refresh-icon');
-    if (refreshIcon) {
-        refreshIcon.classList.remove('spinning');
-        requestAnimationFrame(() => {
-            refreshIcon.classList.add('spinning');
-        });
-    }
-    
-    startLoading();
-    
-    const iframe = document.querySelector('iframe');
-    if (iframe) {
-        iframe.src = iframe.src;
-    }
-}
-
-// Added auto-selection when a brand new tab opens natively
-function createTab() {
-    tabs.push({ id: Date.now(), url: "citrus://home", title: "New Tab" });
-    renderTabs();
-    switchToTab(tabs.length - 1);
-    
-    // Smoothly focus the URL box immediately so you can start typing right away
-    setTimeout(() => {
-        const urlInput = document.getElementById('url-input');
-        if(urlInput) {
-            urlInput.focus();
-            urlInput.select();
+    } else {
+        if (isLikelyURL(input)) {
+            tabs[currentTab].url = input.startsWith('http') ? input : 'https://' + input;
+        } else {
+            tabs[currentTab].url = `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
         }
-    }, 50);
+    }
+    render();
 }
 
+function switchTab(index) { currentTab = index; render(); }
+function newTab() { createTab(); }
+function handleUrlClick(input) { if (input.value === "citrus://home") input.select(); }
+
+// Native Framed History Traversing
 function goBack() {
-    if (tabs[currentTab].url === "citrus://home") return;
-    const iframe = document.querySelector('iframe');
-    if (iframe) iframe.contentWindow.history.back();
+    const frame = document.getElementsByName('citrus-frame')[0];
+    if (frame) frame.contentWindow.history.back();
 }
 
 function goForward() {
-    if (tabs[currentTab].url === "citrus://home") return;
-    const iframe = document.querySelector('iframe');
-    if (iframe) iframe.contentWindow.history.forward();
+    const frame = document.getElementsByName('citrus-frame')[0];
+    if (frame) frame.contentWindow.history.forward();
+}
+
+function refreshPage() {
+    const icon = document.getElementById('refresh-icon');
+    const frame = document.getElementsByName('citrus-frame')[0];
+    
+    if (icon) {
+        icon.classList.remove('spinning');
+        requestAnimationFrame(() => {
+            icon.classList.add('spinning');
+        });
+        setTimeout(() => icon.classList.remove('spinning'), 1000);
+    }
+    if (frame) frame.src = frame.src;
 }
 
 window.onload = () => createTab();
